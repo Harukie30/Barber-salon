@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 import { LayoutGrid } from "lucide-react";
 import { gallery } from "@/lib/site-content";
 import { Reveal } from "@/components/site/reveal";
@@ -23,6 +24,13 @@ export function Gallery() {
   const [count, setCount] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const autoplay = useRef(
+    Autoplay({
+      delay: 1500,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    })
+  );
 
   useEffect(() => {
     if (!api) return;
@@ -41,6 +49,16 @@ export function Gallery() {
       api.off("select", sync);
     };
   }, [api]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    if (modalOpen) {
+      autoplay.current.stop();
+    } else {
+      autoplay.current.play();
+    }
+  }, [api, modalOpen]);
 
   const openAll = () => {
     setActiveIndex(null);
@@ -88,6 +106,7 @@ export function Gallery() {
               align: "start",
               loop: true,
             }}
+            plugins={[autoplay.current]}
             className="w-full"
           >
             <div className="mb-5 flex items-center justify-between gap-4 px-4 sm:mb-6 sm:px-6 lg:px-8">

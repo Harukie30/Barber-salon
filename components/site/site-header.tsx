@@ -24,16 +24,18 @@ export function SiteHeader() {
     let lastY = window.scrollY;
     let scrolledState = window.scrollY > 24;
     let hiddenState = false;
-    const directionThreshold = 12;
-    // Keep solid styles until closer to the top to avoid flicker at the boundary
+    let lockUntil = 0;
+    const directionThreshold = 14;
     const scrolledOn = 64;
     const scrolledOff = 16;
-    // Don't auto-hide until well past the top style change
     const hideAfter = 160;
+    // Keep hide/show from reversing mid-glide
+    const motionMs = 520;
 
     const onScroll = () => {
       const y = Math.max(0, window.scrollY);
       const delta = y - lastY;
+      const now = performance.now();
 
       const nextScrolled = scrolledState
         ? y > scrolledOff
@@ -47,19 +49,16 @@ export function SiteHeader() {
       let nextHidden = hiddenState;
       if (y < hideAfter) {
         nextHidden = false;
-      } else if (Math.abs(delta) > directionThreshold) {
+        lastY = y;
+      } else if (now >= lockUntil && Math.abs(delta) > directionThreshold) {
         nextHidden = delta > 0;
         lastY = y;
       }
 
       if (nextHidden !== hiddenState) {
         hiddenState = nextHidden;
+        lockUntil = now + motionMs;
         setHidden(nextHidden);
-      }
-
-      // Always track position near the top so re-entry doesn't jump
-      if (y < hideAfter) {
-        lastY = y;
       }
     };
 
@@ -71,8 +70,8 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-[transform,background-color,border-color,box-shadow] duration-300 ease-out",
-        hidden ? "-translate-y-full" : "translate-y-0",
+        "fixed inset-x-0 top-0 z-40 will-change-transform transition-[transform,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+        hidden ? "pointer-events-none -translate-y-full" : "translate-y-0",
         scrolled
           ? "border-b border-border/70 bg-background/90 shadow-sm backdrop-blur-md"
           : "border-b border-transparent bg-transparent"
@@ -89,7 +88,7 @@ export function SiteHeader() {
               key={link.href}
               href={link.href}
               className={cn(
-                "text-sm font-medium transition-colors duration-300 hover:text-gold",
+                "text-sm font-medium transition-colors duration-500 hover:text-gold",
                 scrolled ? "text-navy/85" : "text-white/85"
               )}
             >
@@ -105,7 +104,7 @@ export function SiteHeader() {
             variant="outline"
             size="sm"
             className={cn(
-              "transition-colors duration-300",
+              "transition-colors duration-500",
               scrolled
                 ? "border-border bg-background text-navy hover:bg-muted"
                 : "border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
@@ -132,7 +131,7 @@ export function SiteHeader() {
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "md:hidden transition-colors duration-300",
+                  "md:hidden transition-colors duration-500",
                   scrolled
                     ? "border-border bg-background text-navy hover:bg-muted"
                     : "border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white"
@@ -144,18 +143,19 @@ export function SiteHeader() {
             <span className="sr-only">Open menu</span>
           </SheetTrigger>
           <SheetContent side="right" className="gap-0">
-            <SheetHeader className="border-b border-border">
+            <SheetHeader className="animate-sheet-item border-b border-border">
               <SheetTitle className="sr-only">{site.name}</SheetTitle>
               <BrandLogo className="h-14 w-auto self-start" />
             </SheetHeader>
             <nav className="flex flex-col gap-1 p-4">
-              {navLinks.map((link) => (
+              {navLinks.map((link, index) => (
                 <SheetClose
                   key={link.href}
                   render={
                     <a
                       href={link.href}
-                      className="rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
+                      style={{ animationDelay: `${120 + index * 60}ms` }}
+                      className="animate-sheet-item rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
                     />
                   }
                 >
@@ -163,7 +163,10 @@ export function SiteHeader() {
                 </SheetClose>
               ))}
             </nav>
-            <div className="mt-auto flex flex-col gap-2 border-t border-border p-4">
+            <div
+              style={{ animationDelay: `${120 + navLinks.length * 60}ms` }}
+              className="animate-sheet-item mt-auto flex flex-col gap-2 border-t border-border p-4"
+            >
               <Button
                 nativeButton={false}
                 render={<a href={site.phoneHref} />}

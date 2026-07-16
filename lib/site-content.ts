@@ -1,16 +1,16 @@
 export const site = {
-  name: "Moely Boley",
+  name: "MoelyBoley",
   logoSrc: "/mb-logo.png",
-  tagline: "Modern cuts & care in Tagbilaran City",
+  tagline: "Modern cuts & care in Tagbilaran City, Bohol, Philippines",
   headline: "Look sharp. Feel ready.",
   description:
-    "Hair, barber, nails, and brows — clean work in the heart of Tagbilaran.",
+    "Hair, barber, nails, and brows clean work in the heart of Tagbilaran, Bohol, Philippines.",
   phoneDisplay: "+63 917 123 4567",
   phoneHref: "tel:+639171234567",
   messengerHref: "https://m.me/moelyboley",
   facebookHref: "https://facebook.com/moelyboley",
   email: "hello@moelyboley.ph",
-  city: "Tagbilaran City, Bohol",
+  city: "Tagbilaran City, Bohol, Philippines",
 } as const;
 
 export const navLinks = [
@@ -88,7 +88,7 @@ export const reviews = [
   },
   {
     name: "Ana L.",
-    quote: "Got my brows and nails done — everything felt neat and professional.",
+    quote: "Got my brows and nails done everything felt neat and professional.",
     initials: "AL",
   },
   {
@@ -121,12 +121,12 @@ export const hours = [
 
 export const branches = [
   {
-    name: "Moely Boley – CPG Avenue",
+    name: "MoelyBoley – CPG Avenue",
     address: "CPG Avenue, Tagbilaran City, Bohol",
     note: "Main branch",
   },
   {
-    name: "Moely Boley – Dao",
+    name: "MoelyBoley – Dao",
     address: "Dao District, Tagbilaran City, Bohol",
     note: "Second branch",
   },

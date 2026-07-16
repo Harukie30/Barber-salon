@@ -10,7 +10,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-sm space-y-3">
-            <BrandLogo blend className="h-16 sm:h-20" />
+            <BrandLogo className="h-16 sm:h-20" />
             <p className="text-sm leading-relaxed text-white/75">
               {site.tagline}. Call or message us to book your next appointment.
             </p>

@@ -4,28 +4,25 @@ import { site } from "@/lib/site-content";
 
 type BrandLogoProps = {
   className?: string;
-  /** Knock out the black PNG canvas on dark surfaces */
-  blend?: boolean;
   priority?: boolean;
 };
 
-export function BrandLogo({
-  className,
-  blend = false,
-  priority = false,
-}: BrandLogoProps) {
+export function BrandLogo({ className, priority = false }: BrandLogoProps) {
   return (
-    <Image
-      src={site.logoSrc}
-      alt={`${site.name} logo`}
-      width={160}
-      height={160}
-      priority={priority}
+    <span
       className={cn(
-        "h-10 w-auto object-contain sm:h-12",
-        blend && "mix-blend-lighten",
+        "inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-0.5 shadow-sm ring-1 ring-black/10",
         className
       )}
-    />
+    >
+      <Image
+        src={site.logoSrc}
+        alt={`${site.name} logo`}
+        width={160}
+        height={160}
+        priority={priority}
+        className="h-full w-auto object-contain"
+      />
+    </span>
   );
 }

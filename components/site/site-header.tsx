@@ -22,16 +22,45 @@ export function SiteHeader() {
 
   useEffect(() => {
     let lastY = window.scrollY;
+    let scrolledState = window.scrollY > 24;
+    let hiddenState = false;
+    const directionThreshold = 12;
+    // Keep solid styles until closer to the top to avoid flicker at the boundary
+    const scrolledOn = 64;
+    const scrolledOff = 16;
+    // Don't auto-hide until well past the top style change
+    const hideAfter = 160;
 
     const onScroll = () => {
-      const y = window.scrollY;
-      const goingDown = y > lastY;
-      const pastTop = y > 80;
+      const y = Math.max(0, window.scrollY);
+      const delta = y - lastY;
 
-      setScrolled(pastTop);
-      // Hide only after leaving the top a bit, and only while scrolling down
-      setHidden(pastTop && goingDown && y - lastY > 4);
-      lastY = y;
+      const nextScrolled = scrolledState
+        ? y > scrolledOff
+        : y > scrolledOn;
+
+      if (nextScrolled !== scrolledState) {
+        scrolledState = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+
+      let nextHidden = hiddenState;
+      if (y < hideAfter) {
+        nextHidden = false;
+      } else if (Math.abs(delta) > directionThreshold) {
+        nextHidden = delta > 0;
+        lastY = y;
+      }
+
+      if (nextHidden !== hiddenState) {
+        hiddenState = nextHidden;
+        setHidden(nextHidden);
+      }
+
+      // Always track position near the top so re-entry doesn't jump
+      if (y < hideAfter) {
+        lastY = y;
+      }
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -42,20 +71,16 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-transform duration-300 ease-out",
+        "fixed inset-x-0 top-0 z-40 transition-[transform,background-color,border-color,box-shadow] duration-300 ease-out",
         hidden ? "-translate-y-full" : "translate-y-0",
         scrolled
           ? "border-b border-border/70 bg-background/90 shadow-sm backdrop-blur-md"
-          : "bg-transparent"
+          : "border-b border-transparent bg-transparent"
       )}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
         <Link href="#top" className="shrink-0" aria-label={site.name}>
-          <BrandLogo
-            blend={!scrolled}
-            priority
-            className="h-11 sm:h-14"
-          />
+          <BrandLogo priority className="h-11 sm:h-14" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -64,7 +89,7 @@ export function SiteHeader() {
               key={link.href}
               href={link.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-gold",
+                "text-sm font-medium transition-colors duration-300 hover:text-gold",
                 scrolled ? "text-navy/85" : "text-white/85"
               )}
             >
@@ -80,6 +105,7 @@ export function SiteHeader() {
             variant="outline"
             size="sm"
             className={cn(
+              "transition-colors duration-300",
               scrolled
                 ? "border-border bg-background text-navy hover:bg-muted"
                 : "border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
@@ -106,7 +132,7 @@ export function SiteHeader() {
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "md:hidden",
+                  "md:hidden transition-colors duration-300",
                   scrolled
                     ? "border-border bg-background text-navy hover:bg-muted"
                     : "border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white"

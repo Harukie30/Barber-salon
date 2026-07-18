@@ -1,5 +1,5 @@
 export const site = {
-  name: "MoelyBoley",
+  name: "MoelyBole",
   logoSrc: "/mb-logo-v2.png",
   /** Transparent mark for watermarks / dark surfaces */
   logoMarkSrc: "/mb-logo-mark-v2.png",

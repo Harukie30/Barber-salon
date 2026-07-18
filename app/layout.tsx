@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono, Syne } from "next/font/google";
 import "./globals.css";
+import { PageLoader } from "@/components/site/page-loader";
 import { cn } from "@/lib/utils";
 
 const dmSans = DM_Sans({
@@ -40,7 +41,10 @@ export default function RootLayout({
         "font-sans"
       )}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <PageLoader />
+        {children}
+      </body>
     </html>
   );
 }

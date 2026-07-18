@@ -1,8 +1,8 @@
 export const site = {
   name: "MoelyBoley",
-  logoSrc: "/mb-logo.png",
+  logoSrc: "/mb-logo-v2.png",
   /** Transparent mark for watermarks / dark surfaces */
-  logoMarkSrc: "/mb-logo-mark.png",
+  logoMarkSrc: "/mb-logo-mark-v2.png",
   tagline: "Modern cuts & care in Tagbilaran City, Bohol, Philippines",
   headline: "Look sharp. Feel ready.",
   description:

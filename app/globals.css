@@ -182,6 +182,22 @@
     animation: sheet-item 0.55s cubic-bezier(0.32, 0.72, 0, 1) both;
   }
 
+  .animate-loader-rise {
+    animation: loader-rise 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  }
+
+  .animate-loader-rise-delay {
+    animation: loader-rise 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.12s both;
+  }
+
+  .animate-loader-rise-delay-2 {
+    animation: loader-rise 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.24s both;
+  }
+
+  .animate-loader-bar {
+    animation: loader-bar 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
   .reveal {
     opacity: 0;
     transform: translateY(1.25rem);
@@ -218,11 +234,35 @@
   }
 }
 
+@keyframes loader-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loader-bar {
+  0% {
+    transform: translateX(-140%);
+  }
+  100% {
+    transform: translateX(280%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-rise,
   .animate-hero-rise-delay,
   .animate-hero-rise-delay-2,
-  .animate-sheet-item {
+  .animate-sheet-item,
+  .animate-loader-rise,
+  .animate-loader-rise-delay,
+  .animate-loader-rise-delay-2,
+  .animate-loader-bar {
     animation: none;
   }
 

@@ -1,17 +1,39 @@
 export const site = {
   name: "MoelyBoley",
   logoSrc: "/mb-logo.png",
+  /** Transparent mark for watermarks / dark surfaces */
+  logoMarkSrc: "/mb-logo-mark.png",
   tagline: "Modern cuts & care in Tagbilaran City, Bohol, Philippines",
   headline: "Look sharp. Feel ready.",
   description:
     "Hair, barber, nails, and brows clean work in the heart of Tagbilaran, Bohol, Philippines.",
-  phoneDisplay: "+63 917 123 4567",
-  phoneHref: "tel:+639171234567",
+  phoneDisplay: "0916 579 0503",
+  phoneHref: "tel:+639165790503",
   messengerHref: "https://m.me/moelyboley",
   facebookHref: "https://facebook.com/moelyboley",
+  instagramHref: "https://instagram.com/moelyboley",
+  tiktokHref: "https://tiktok.com/@moelyboley",
   email: "hello@moelyboley.ph",
   city: "Tagbilaran City, Bohol, Philippines",
 } as const;
+
+export const socialLinks = [
+  {
+    label: "Facebook",
+    href: site.facebookHref,
+    network: "facebook",
+  },
+  {
+    label: "Instagram",
+    href: site.instagramHref,
+    network: "instagram",
+  },
+  {
+    label: "TikTok",
+    href: site.tiktokHref,
+    network: "tiktok",
+  },
+] as const;
 
 export const navLinks = [
   { label: "Services", href: "#services" },
@@ -121,20 +143,50 @@ export const hours = [
 
 export const branches = [
   {
-    name: "MoelyBoley – CPG Avenue",
-    address: "CPG Avenue, Tagbilaran City, Bohol",
+    name: "Moley Boley (in-front of BISU)",
+    type: "Barber shop",
+    address: "In front of BISU, Tagbilaran City, Bohol",
     note: "Main branch",
+    phoneDisplay: "0916 579 0503",
+    phoneHref: "tel:+639165790503",
+    mapQuery: "Carlos, P. Garcia Avenue, Tagbilaran City, Bohol",
   },
   {
-    name: "MoelyBoley – Dao",
-    address: "Dao District, Tagbilaran City, Bohol",
-    note: "Second branch",
+    name: "Moley Boley JLU",
+    type: "Barber shop",
+    address: "Tagbilaran City, Bohol",
+    note: "JLU branch",
+    phoneDisplay: "0953 778 4352",
+    phoneHref: "tel:+639537784352",
+    mapQuery: "MV3C+Q8P, Rajah Sikatuna Ave, Tagbilaran City, Bohol",
+  },
+  {
+    name: "Moley Boley Galleria Branch",
+    type: "Beauty salon",
+    address: "Galleria, Tagbilaran City, Bohol",
+    note: "Galleria branch",
+    phoneDisplay: "0936 310 1218",
+    phoneHref: "tel:+639363101218",
+    mapQuery: "Galleria Luisa, C Galleria St, Tagbilaran City, 6300 Bohol",
+  },
+  {
+    name: "Moley Boley BQ Branch",
+    type: "Beauty salon",
+    address: "BQ, Tagbilaran City, Bohol",
+    note: "BQ branch",
+    phoneDisplay: "0955 699 5695",
+    phoneHref: "tel:+639556995695",
+    mapQuery: "JVR4+P66, Poblacion II, Tagbilaran City, Bohol",
   },
 ] as const;
 
-/** Mock pin centered on Tagbilaran City */
-export const mapsEmbedUrl =
-  "https://maps.google.com/maps?q=Tagbilaran%20City%2C%20Bohol&t=&z=14&ie=UTF8&iwloc=&output=embed";
+export function mapsEmbedForAddress(address: string) {
+  const query = encodeURIComponent(address);
+  return `https://maps.google.com/maps?q=${query}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+}
+
+/** Default map pin — first branch */
+export const mapsEmbedUrl = mapsEmbedForAddress(branches[0].mapQuery);
 
 export const heroImage = {
   src: "https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?auto=format&fit=crop&w=1920&q=80",

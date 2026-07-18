@@ -25,12 +25,12 @@ export function SiteHeader() {
     let scrolledState = window.scrollY > 24;
     let hiddenState = false;
     let lockUntil = 0;
-    const directionThreshold = 14;
+    const directionThreshold = 18;
     const scrolledOn = 64;
     const scrolledOff = 16;
     const hideAfter = 160;
-    // Keep hide/show from reversing mid-glide
-    const motionMs = 520;
+    // Match the longer CSS glide so it doesn't snap reverse mid-motion
+    const motionMs = 780;
 
     const onScroll = () => {
       const y = Math.max(0, window.scrollY);
@@ -70,8 +70,10 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 will-change-transform transition-[transform,background-color,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
-        hidden ? "pointer-events-none -translate-y-full" : "translate-y-0",
+        "fixed inset-x-0 top-0 z-40 will-change-transform transition-[transform,opacity,background-color,border-color,box-shadow] duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]",
+        hidden
+          ? "pointer-events-none -translate-y-full opacity-0"
+          : "translate-y-0 opacity-100",
         scrolled
           ? "border-b border-border/70 bg-background/90 shadow-sm backdrop-blur-md"
           : "border-b border-transparent bg-transparent"
@@ -88,7 +90,7 @@ export function SiteHeader() {
               key={link.href}
               href={link.href}
               className={cn(
-                "text-sm font-medium transition-colors duration-500 hover:text-gold",
+                "text-sm font-medium transition-colors duration-700 hover:text-gold",
                 scrolled ? "text-navy/85" : "text-white/85"
               )}
             >
@@ -104,7 +106,7 @@ export function SiteHeader() {
             variant="outline"
             size="sm"
             className={cn(
-              "transition-colors duration-500",
+              "transition-colors duration-700",
               scrolled
                 ? "border-border bg-background text-navy hover:bg-muted"
                 : "border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white"
@@ -131,7 +133,7 @@ export function SiteHeader() {
                 variant="outline"
                 size="icon"
                 className={cn(
-                  "md:hidden transition-colors duration-500",
+                  "md:hidden transition-colors duration-700",
                   scrolled
                     ? "border-border bg-background text-navy hover:bg-muted"
                     : "border-white/40 bg-white/10 text-white hover:bg-white/20 hover:text-white"
